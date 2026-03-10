@@ -1,8 +1,19 @@
 {
  "canais":[
   {
-   "nome":"Sportv",
+   "id":1,
+   "nome":"Canal 1",
+   "stream":"http://gerenciar.vivatele.com:80/viva_padrao/viva2384/1"
+  },
+  {
+   "id":2,
+   "nome":"Canal 2",
    "stream":"http://gerenciar.vivatele.com:80/viva_padrao/viva2384/2"
+  },
+  {
+   "id":3,
+   "nome":"Canal 3",
+   "stream":"http://gerenciar.vivatele.com:80/viva_padrao/viva2384/3"
   }
  ]
 }

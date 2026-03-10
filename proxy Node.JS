@@ -3,11 +3,13 @@ const request = require("request")
 
 const app = express()
 
-app.get("/stream", (req,res)=>{
+app.get("/canal/:id",(req,res)=>{
 
-const url = req.query.url
+const id = req.params.id
 
-req.pipe(request(url)).pipe(res)
+const url = `http://gerenciar.vivatele.com:80/viva_padrao/viva2384/${id}`
+
+request(url).pipe(res)
 
 })
 

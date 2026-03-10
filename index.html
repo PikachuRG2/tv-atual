@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>RG2 TV</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<style>
+
+body{
+margin:0;
+background:black;
+color:white;
+display:flex;
+height:100vh;
+font-family:Arial;
+}
+
+#canais{
+width:260px;
+background:#111;
+overflow:auto;
+}
+
+.canal{
+padding:12px;
+border-bottom:1px solid #222;
+cursor:pointer;
+}
+
+.canal.ativo{
+background:#00aaff;
+}
+
+#player{
+flex:1;
+position:relative;
+}
+
+video{
+width:100%;
+height:100%;
+background:black;
+}
+
+.buffer{
+display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="canais"></div>
+
+<div id="player">
+
+<video id="videoMain" autoplay controls></video>
+
+<!-- players escondidos -->
+<video id="buffer1" class="buffer"></video>
+<video id="buffer2" class="buffer"></video>
+
+</div>
+
+<script>
+
+let canais=[]
+let canalAtual=0
+
+let players=[
+document.getElementById("videoMain"),
+document.getElementById("buffer1"),
+document.getElementById("buffer2")
+]
+
+let hlsPlayers=[null,null,null]
+
+async function carregar(){
+
+const res=await fetch("lista.m3u")
+const txt=await res.text()
+
+const linhas=txt.split("\n")
+
+for(let i=0;i<linhas.length;i++){
+
+if(linhas[i].startsWith("#EXTINF")){
+
+let nome=linhas[i].split(",")[1]
+let url=linhas[i+1]
+
+canais.push({nome,url})
+
+}
+
+}
+
+mostrar()
+abrir(0)
+
+}
+
+function mostrar(){
+
+let div=document.getElementById("canais")
+
+canais.forEach((c,i)=>{
+
+let item=document.createElement("div")
+item.className="canal"
+item.innerText=c.nome
+
+item.onclick=()=>abrir(i)
+
+div.appendChild(item)
+
+})
+
+}
+
+function abrir(i){
+
+canalAtual=i
+
+carregarPlayer(players[0],i)
+
+preload(i+1,1)
+preload(i+2,2)
+
+atualizar()
+
+}
+
+function carregarPlayer(video,i){
+
+if(!canais[i]) return
+
+let url=canais[i].url
+
+if(Hls.isSupported()){
+
+let hls=new Hls({lowLatencyMode:true})
+
+hls.loadSource(url)
+hls.attachMedia(video)
+
+}else{
+
+video.src=url
+
+}
+
+}
+
+function preload(i,pos){
+
+if(!canais[i]) return
+
+carregarPlayer(players[pos],i)
+
+}
+
+function atualizar(){
+
+document.querySelectorAll(".canal").forEach((el,i)=>{
+
+el.classList.toggle("ativo",i===canalAtual)
+
+})
+
+}
+
+document.addEventListener("keydown",e=>{
+
+if(e.key==="ArrowDown"){
+abrir(canalAtual+1)
+}
+
+if(e.key==="ArrowUp"){
+abrir(canalAtual-1)
+}
+
+})
+
+carregar()
+
+</script>
+
+</body>
+</html>

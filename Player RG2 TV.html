@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>RG2 TV</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<style>
+
+body{
+background:#0b0b0b;
+color:white;
+font-family:Arial;
+margin:0;
+display:flex;
+height:100vh;
+}
+
+#canais{
+width:280px;
+overflow:auto;
+background:#111;
+}
+
+.canal{
+padding:12px;
+border-bottom:1px solid #222;
+cursor:pointer;
+}
+
+.canal:hover{
+background:#1f1f1f;
+}
+
+.canal.ativo{
+background:#00aaff;
+}
+
+video{
+width:100%;
+height:100%;
+background:black;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="canais"></div>
+
+<div style="flex:1">
+<video id="video" controls autoplay></video>
+</div>
+
+<script>
+
+let canais=[]
+let canalAtual=0
+let hls
+
+async function carregar(){
+
+await carregarM3U("lista.m3u")
+
+await carregarJSON("lista.json")
+
+await carregarAPI("https://api.meusite.com/canais")
+
+mostrar()
+abrir(0)
+
+}
+
+async function carregarM3U(url){
+
+const res=await fetch(url)
+const txt=await res.text()
+
+const linhas=txt.split("\n")
+
+for(let i=0;i<linhas.length;i++){
+
+if(linhas[i].startsWith("#EXTINF")){
+
+let nome=linhas[i].split(",")[1]
+let link=linhas[i+1]
+
+canais.push({nome,url:link})
+
+}
+
+}
+
+}
+
+async function carregarJSON(url){
+
+try{
+
+const res=await fetch(url)
+const data=await res.json()
+
+data.forEach(c=>{
+
+canais.push({
+nome:c.nome,
+url:c.url
+})
+
+})
+
+}catch(e){}
+
+}
+
+async function carregarAPI(url){
+
+try{
+
+const res=await fetch(url)
+const data=await res.json()
+
+data.canais.forEach(c=>{
+
+canais.push({
+nome:c.nome,
+url:c.stream
+})
+
+})
+
+}catch(e){}
+
+}
+
+function mostrar(){
+
+const div=document.getElementById("canais")
+div.innerHTML=""
+
+canais.forEach((c,i)=>{
+
+let item=document.createElement("div")
+item.className="canal"
+item.innerText=c.nome
+
+if(i===canalAtual) item.classList.add("ativo")
+
+item.onclick=()=>abrir(i)
+
+div.appendChild(item)
+
+})
+
+}
+
+function abrir(i){
+
+canalAtual=i
+const url=canais[i].url
+const video=document.getElementById("video")
+
+if(hls) hls.destroy()
+
+if(Hls.isSupported()){
+
+hls=new Hls({lowLatencyMode:true})
+
+hls.loadSource(url)
+hls.attachMedia(video)
+
+}else{
+
+video.src=url
+
+}
+
+atualizar()
+
+}
+
+function atualizar(){
+
+document.querySelectorAll(".canal").forEach((el,i)=>{
+
+el.classList.toggle("ativo",i===canalAtual)
+
+})
+
+}
+
+document.addEventListener("keydown",e=>{
+
+if(e.key==="ArrowDown") abrir(canalAtual+1)
+if(e.key==="ArrowUp") abrir(canalAtual-1)
+
+})
+
+carregar()
+
+</script>
+
+</body>
+</html>

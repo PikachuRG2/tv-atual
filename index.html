@@ -9,7 +9,11 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
 <style>
 
@@ -23,9 +27,8 @@ color:white;
 header{
 background:#000;
 padding:15px;
-font-size:22px;
 text-align:center;
-border-bottom:1px solid #333;
+font-size:22px;
 }
 
 #loginArea{
@@ -35,29 +38,24 @@ align-items:center;
 height:80vh;
 }
 
-button{
-padding:10px 20px;
-background:#00aaff;
-border:none;
-color:white;
-cursor:pointer;
-}
-
 .player{
 width:100%;
-background:black;
-}
-
-video{
-width:100%;
-height:350px;
-background:black;
+max-width:900px;
+margin:auto;
 }
 
 .categorias{
 display:flex;
 gap:10px;
 padding:10px;
+}
+
+button{
+padding:10px 15px;
+background:#00aaff;
+border:none;
+color:white;
+cursor:pointer;
 }
 
 #lista{
@@ -88,13 +86,14 @@ background:#1f1f1f;
 <div id="app" style="display:none;">
 
 <div class="player">
-<video id="video" controls autoplay></video>
+
+<video id="video"></video>
+
 </div>
 
 <div class="categorias">
 <button onclick="carregar('tv')">TV</button>
 <button onclick="carregar('esportes')">Esportes</button>
-<button onclick="carregar('filmes')">Filmes</button>
 </div>
 
 <div id="lista"></div>
@@ -105,22 +104,25 @@ background:#1f1f1f;
 
 const firebaseConfig = {
 
-apiKey: "AIzaSyCI8ArQt-1KgPjue7hROhGIKa-m8cF90a4",
-authDomain: "rg2-tv-pro.firebaseapp.com",
-projectId: "rg2-tv-pro"
+apiKey:"AIzaSyCI8ArQt-1KgPjue7hROhGIKa-m8cF90a4",
+authDomain:"rg2-tv-pro.firebaseapp.com",
+projectId:"rg2-tv-pro"
 
-};
+}
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig)
 
-const auth = firebase.auth();
-const db = firebase.firestore();
+const auth = firebase.auth()
+const db = firebase.firestore()
+
+let player = new Plyr('#video')
+let hls
 
 function login(){
 
-const provider = new firebase.auth.GoogleAuthProvider();
+const provider = new firebase.auth.GoogleAuthProvider()
 
-auth.signInWithPopup(provider);
+auth.signInWithPopup(provider)
 
 }
 
@@ -128,16 +130,16 @@ auth.onAuthStateChanged(user=>{
 
 if(user){
 
-document.getElementById("loginArea").style.display="none";
-document.getElementById("app").style.display="block";
+document.getElementById("loginArea").style.display="none"
+document.getElementById("app").style.display="block"
 
 }
 
-});
+})
 
 function carregar(cat){
 
-const lista = document.getElementById("lista");
+const lista=document.getElementById("lista")
 
 lista.innerHTML="Carregando..."
 
@@ -150,7 +152,7 @@ lista.innerHTML=""
 
 snapshot.forEach(doc=>{
 
-const c = doc.data()
+const c=doc.data()
 
 let div=document.createElement("div")
 
@@ -167,21 +169,21 @@ lista.appendChild(div)
 
 }
 
-let hls
-
 function abrir(url){
 
 const video=document.getElementById("video")
 
-if(hls) hls.destroy()
+if(hls){
+hls.destroy()
+hls=null
+}
 
-if(Hls.isSupported()){
+if(url.includes(".m3u8")){
 
-hls=new Hls({
-lowLatencyMode:true
-})
+hls=new Hls()
 
 hls.loadSource(url)
+
 hls.attachMedia(video)
 
 }else{
@@ -189,6 +191,8 @@ hls.attachMedia(video)
 video.src=url
 
 }
+
+player.play()
 
 }
 

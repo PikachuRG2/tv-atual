@@ -171,28 +171,42 @@ lista.appendChild(div)
 
 function abrir(url){
 
-const video=document.getElementById("video")
+const video = document.getElementById("video")
+
+console.log("Abrindo canal:", url)
 
 if(hls){
 hls.destroy()
-hls=null
+hls = null
 }
 
-if(url.includes(".m3u8")){
+if(Hls.isSupported()){
 
-hls=new Hls()
+hls = new Hls({
+lowLatencyMode:true
+})
 
 hls.loadSource(url)
 
 hls.attachMedia(video)
 
+hls.on(Hls.Events.MANIFEST_PARSED, function(){
+video.play()
+})
+
+}else if(video.canPlayType('application/vnd.apple.mpegurl')){
+
+video.src = url
+video.addEventListener('loadedmetadata', function(){
+video.play()
+})
+
 }else{
 
-video.src=url
+video.src = url
+video.play()
 
 }
-
-player.play()
 
 }
 

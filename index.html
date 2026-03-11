@@ -226,12 +226,18 @@ canalAtual=i
 const url=canais[i].url
 const video=document.getElementById("video")
 
+console.log("Abrindo canal:",url)
+
 if(hls){
 hls.destroy()
 hls=null
 }
 
-if(url.includes(".m3u8") && Hls.isSupported()){
+video.pause()
+
+if(url.includes(".m3u8")){
+
+if(Hls.isSupported()){
 
 hls=new Hls({
 lowLatencyMode:true
@@ -240,9 +246,21 @@ lowLatencyMode:true
 hls.loadSource(url)
 hls.attachMedia(video)
 
+hls.on(Hls.Events.MANIFEST_PARSED,function(){
+video.play()
+})
+
 }else{
 
 video.src=url
+video.play()
+
+}
+
+}else{
+
+video.src=url
+video.play()
 
 }
 

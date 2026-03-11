@@ -1,3 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>RG2 TV</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<style>
+
+body{
+background:#0b0b0b;
+color:white;
+font-family:Arial;
+margin:0;
+display:flex;
+height:100vh;
+}
+
+#canais{
+width:280px;
+overflow:auto;
+background:#111;
+}
+
+.canal{
+padding:12px;
+border-bottom:1px solid #222;
+cursor:pointer;
+}
+
+.canal:hover{
+background:#1f1f1f;
+}
+
+.canal.ativo{
+background:#00aaff;
+}
+
+video{
+width:100%;
+height:100%;
+background:black;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="canais"></div>
+
+<div style="flex:1">
+<video id="video" controls autoplay></video>
+</div>
+
 <script>
 
 let canais=[]
@@ -7,13 +62,10 @@ let hls
 async function carregar(){
 
 await carregarM3U("lista.m3u")
-await carregarJSON("lista.json")
-await carregarAPI("https://api.meusite.com/canais")
 
-if(canais.length === 0){
-console.warn("Nenhum canal carregado")
-return
-}
+await carregarJSON("lista.json")
+
+await carregarAPI("https://api.meusite.com/canais")
 
 mostrar()
 abrir(0)
@@ -22,8 +74,6 @@ abrir(0)
 
 async function carregarM3U(url){
 
-try{
-
 const res=await fetch(url)
 const txt=await res.text()
 
@@ -31,24 +81,14 @@ const linhas=txt.split("\n")
 
 for(let i=0;i<linhas.length;i++){
 
-let linha = linhas[i].trim()
+if(linhas[i].startsWith("#EXTINF")){
 
-if(linha.startsWith("#EXTINF")){
+let nome=linhas[i].split(",")[1]
+let link=linhas[i+1]
 
-let nome = linha.split(",")[1] || "Canal"
-let link = (linhas[i+1] || "").trim()
-
-if(link){
-canais.push({nome:nome.trim(),url:link})
-}
+canais.push({nome,url:link})
 
 }
-
-}
-
-}catch(e){
-
-console.warn("Erro M3U",e)
 
 }
 
@@ -61,24 +101,16 @@ try{
 const res=await fetch(url)
 const data=await res.json()
 
-if(!Array.isArray(data)) return
-
 data.forEach(c=>{
 
-if(c.url){
 canais.push({
-nome:(c.nome || "Canal").trim(),
+nome:c.nome,
 url:c.url
 })
-}
 
 })
 
-}catch(e){
-
-console.warn("Erro JSON",e)
-
-}
+}catch(e){}
 
 }
 
@@ -89,24 +121,16 @@ try{
 const res=await fetch(url)
 const data=await res.json()
 
-if(!data.canais) return
-
 data.canais.forEach(c=>{
 
-if(c.stream){
 canais.push({
-nome:(c.nome || "Canal").trim(),
+nome:c.nome,
 url:c.stream
 })
-}
 
 })
 
-}catch(e){
-
-console.warn("Erro API",e)
-
-}
+}catch(e){}
 
 }
 
@@ -133,10 +157,7 @@ div.appendChild(item)
 
 function abrir(i){
 
-if(!canais[i]) return
-
 canalAtual=i
-
 const url=canais[i].url
 const video=document.getElementById("video")
 
@@ -144,9 +165,7 @@ if(hls) hls.destroy()
 
 if(Hls.isSupported()){
 
-hls=new Hls({
-lowLatencyMode:true
-})
+hls=new Hls({lowLatencyMode:true})
 
 hls.loadSource(url)
 hls.attachMedia(video)
@@ -173,16 +192,14 @@ el.classList.toggle("ativo",i===canalAtual)
 
 document.addEventListener("keydown",e=>{
 
-if(e.key==="ArrowDown" && canalAtual < canais.length-1){
-abrir(canalAtual+1)
-}
-
-if(e.key==="ArrowUp" && canalAtual > 0){
-abrir(canalAtual-1)
-}
+if(e.key==="ArrowDown") abrir(canalAtual+1)
+if(e.key==="ArrowUp") abrir(canalAtual-1)
 
 })
 
 carregar()
 
 </script>
+
+</body>
+</html>

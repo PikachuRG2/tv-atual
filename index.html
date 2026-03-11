@@ -2,74 +2,49 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>RG2 TV PRO</title>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
+<title>RG2 TV</title>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-
-<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
-<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
 <style>
 
 body{
 margin:0;
+background:black;
+color:white;
+display:flex;
+height:100vh;
 font-family:Arial;
-background:#0b0b0b;
-color:white;
 }
 
-header{
-background:#000;
-padding:15px;
-text-align:center;
-font-size:22px;
-}
-
-#loginArea{
-display:flex;
-justify-content:center;
-align-items:center;
-height:80vh;
-}
-
-.player{
-width:100%;
-max-width:900px;
-margin:auto;
-}
-
-.categorias{
-display:flex;
-gap:10px;
-padding:10px;
-}
-
-button{
-padding:10px 15px;
-background:#00aaff;
-border:none;
-color:white;
-cursor:pointer;
-}
-
-#lista{
-padding:10px;
+#canais{
+width:260px;
+background:#111;
+overflow:auto;
 }
 
 .canal{
-padding:10px;
+padding:12px;
 border-bottom:1px solid #222;
 cursor:pointer;
 }
 
-.canal:hover{
-background:#1f1f1f;
+.canal.ativo{
+background:#00aaff;
+}
+
+#player{
+flex:1;
+position:relative;
+}
+
+video{
+width:100%;
+height:100%;
+background:black;
+}
+
+.buffer{
+display:none;
 }
 
 </style>
@@ -77,156 +52,141 @@ background:#1f1f1f;
 
 <body>
 
-<header>📺 RG2 TV PRO</header>
+<div id="canais"></div>
 
-<div id="loginArea">
-<button onclick="login()">Entrar com Google</button>
-</div>
+<div id="player">
 
-<div id="app" style="display:none;">
+<video id="videoMain" autoplay controls></video>
 
-<div class="player">
-
-<video id="video"></video>
-
-</div>
-
-<div class="categorias">
-<button onclick="carregar('tv')">TV</button>
-<button onclick="carregar('esportes')">Esportes</button>
-</div>
-
-<div id="lista"></div>
+<!-- players escondidos -->
+<video id="buffer1" class="buffer"></video>
+<video id="buffer2" class="buffer"></video>
 
 </div>
 
 <script>
 
-const firebaseConfig = {
+let canais=[]
+let canalAtual=0
 
-apiKey:"AIzaSyCI8ArQt-1KgPjue7hROhGIKa-m8cF90a4",
-authDomain:"rg2-tv-pro.firebaseapp.com",
-projectId:"rg2-tv-pro"
+let players=[
+document.getElementById("videoMain"),
+document.getElementById("buffer1"),
+document.getElementById("buffer2")
+]
 
-}
+let hlsPlayers=[null,null,null]
 
-firebase.initializeApp(firebaseConfig)
+async function carregar(){
 
-const auth = firebase.auth()
-const db = firebase.firestore()
+const res=await fetch("lista.m3u")
+const txt=await res.text()
 
-let player = new Plyr('#video')
-let hls
+const linhas=txt.split("\n")
 
-function login(){
+for(let i=0;i<linhas.length;i++){
 
-const provider = new firebase.auth.GoogleAuthProvider()
+if(linhas[i].startsWith("#EXTINF")){
 
-auth.signInWithPopup(provider)
+let nome=linhas[i].split(",")[1]
+let url=linhas[i+1]
 
-}
-
-auth.onAuthStateChanged(user=>{
-
-if(user){
-
-document.getElementById("loginArea").style.display="none"
-document.getElementById("app").style.display="block"
+canais.push({nome,url})
 
 }
 
-})
+}
 
-function carregar(cat){
+mostrar()
+abrir(0)
 
-const lista=document.getElementById("lista")
+}
 
-lista.innerHTML="Carregando..."
+function mostrar(){
 
-db.collection("canais")
-.where("categoria","==",cat)
-.get()
-.then(snapshot=>{
+let div=document.getElementById("canais")
 
-lista.innerHTML=""
+canais.forEach((c,i)=>{
 
-snapshot.forEach(doc=>{
+let item=document.createElement("div")
+item.className="canal"
+item.innerText=c.nome
 
-const c=doc.data()
+item.onclick=()=>abrir(i)
 
-let div=document.createElement("div")
-
-div.className="canal"
-div.innerText=c.nome
-
-div.onclick=()=>abrir(c.url)
-
-lista.appendChild(div)
-
-})
+div.appendChild(item)
 
 })
 
 }
 
-function abrir(url){
+function abrir(i){
 
-const video = document.getElementById("video")
+canalAtual=i
 
-console.log("Abrindo canal:", url)
+carregarPlayer(players[0],i)
 
-if(hls){
-hls.destroy()
-hls = null
+preload(i+1,1)
+preload(i+2,2)
+
+atualizar()
+
 }
+
+function carregarPlayer(video,i){
+
+if(!canais[i]) return
+
+let url=canais[i].url
 
 if(Hls.isSupported()){
 
-hls = new Hls({
-lowLatencyMode:true
-})
+let hls=new Hls({lowLatencyMode:true})
 
 hls.loadSource(url)
-
 hls.attachMedia(video)
-
-hls.on(Hls.Events.MANIFEST_PARSED,function(){
-
-player.source = {
-type: 'video',
-sources: [{
-src: url,
-type: 'application/x-mpegURL'
-}]
-}
-
-video.play()
-
-})
-
-}else if(video.canPlayType('application/vnd.apple.mpegurl')){
-
-player.source = {
-type:'video',
-sources:[{
-src:url,
-type:'application/x-mpegURL'
-}]
-}
-
-video.play()
 
 }else{
 
-player.source = {
-type:'video',
-sources:[{
-src:url
-}]
-}
-
-video.play()
+video.src=url
 
 }
 
 }
+
+function preload(i,pos){
+
+if(!canais[i]) return
+
+carregarPlayer(players[pos],i)
+
+}
+
+function atualizar(){
+
+document.querySelectorAll(".canal").forEach((el,i)=>{
+
+el.classList.toggle("ativo",i===canalAtual)
+
+})
+
+}
+
+document.addEventListener("keydown",e=>{
+
+if(e.key==="ArrowDown"){
+abrir(canalAtual+1)
+}
+
+if(e.key==="ArrowUp"){
+abrir(canalAtual-1)
+}
+
+})
+
+carregar()
+
+</script>
+
+</body>
+</html>

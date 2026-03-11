@@ -190,27 +190,43 @@ hls.loadSource(url)
 
 hls.attachMedia(video)
 
-hls.on(Hls.Events.MANIFEST_PARSED, function(){
+hls.on(Hls.Events.MANIFEST_PARSED,function(){
+
+player.source = {
+type: 'video',
+sources: [{
+src: url,
+type: 'application/x-mpegURL'
+}]
+}
+
 video.play()
+
 })
 
 }else if(video.canPlayType('application/vnd.apple.mpegurl')){
 
-video.src = url
-video.addEventListener('loadedmetadata', function(){
+player.source = {
+type:'video',
+sources:[{
+src:url,
+type:'application/x-mpegURL'
+}]
+}
+
 video.play()
-})
 
 }else{
 
-video.src = url
+player.source = {
+type:'video',
+sources:[{
+src:url
+}]
+}
+
 video.play()
 
 }
 
 }
-
-</script>
-
-</body>
-</html>

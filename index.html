@@ -58,6 +58,7 @@ background:black;
 display:flex;
 gap:10px;
 padding:10px;
+flex-wrap:wrap;
 }
 
 #lista{
@@ -72,6 +73,10 @@ cursor:pointer;
 
 .canal:hover{
 background:#1f1f1f;
+}
+
+.canal.ativo{
+background:#00aaff;
 }
 
 </style>
@@ -116,6 +121,12 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+let hls;
+let canais = [];
+let canalAtual = 0;
+
+/* LOGIN GOOGLE */
+
 function login(){
 
 const provider = new firebase.auth.GoogleAuthProvider();
@@ -135,11 +146,14 @@ document.getElementById("app").style.display="block";
 
 });
 
+/* CARREGAR CANAIS */
+
 function carregar(cat){
 
 const lista = document.getElementById("lista");
 
 lista.innerHTML="Carregando..."
+canais=[]
 
 db.collection("canais")
 .where("categoria","==",cat)
@@ -148,34 +162,76 @@ db.collection("canais")
 
 lista.innerHTML=""
 
+if(snapshot.empty){
+lista.innerHTML="Nenhum canal encontrado"
+return
+}
+
 snapshot.forEach(doc=>{
 
-const c = doc.data()
+const c = doc.data() || {}
+
+let nome = c.nome ? c.nome.trim() : "Canal"
+let url  = c.url ? c.url.trim() : ""
+
+if(!url) return
+
+canais.push({nome,url})
+
+})
+
+mostrar()
+
+})
+.catch(err=>{
+console.error("Erro ao carregar canais:",err)
+})
+
+}
+
+/* MOSTRAR LISTA */
+
+function mostrar(){
+
+const lista=document.getElementById("lista")
+lista.innerHTML=""
+
+canais.forEach((c,i)=>{
 
 let div=document.createElement("div")
 
 div.className="canal"
 div.innerText=c.nome
 
-div.onclick=()=>abrir(c.url)
+if(i===canalAtual){
+div.classList.add("ativo")
+}
+
+div.onclick=()=>abrir(i)
 
 lista.appendChild(div)
 
 })
 
-})
-
 }
 
-let hls
+/* ABRIR CANAL */
 
-function abrir(url){
+function abrir(i){
 
+if(!canais[i]) return
+
+canalAtual=i
+
+const url=canais[i].url
 const video=document.getElementById("video")
 
-if(hls) hls.destroy()
+if(hls){
+hls.destroy()
+hls=null
+}
 
-if(Hls.isSupported()){
+if(url.includes(".m3u8") && Hls.isSupported()){
 
 hls=new Hls({
 lowLatencyMode:true
@@ -190,7 +246,39 @@ video.src=url
 
 }
 
+atualizarUI()
+
 }
+
+/* ATUALIZAR CANAL ATIVO */
+
+function atualizarUI(){
+
+document.querySelectorAll(".canal").forEach((el,i)=>{
+
+el.classList.toggle("ativo",i===canalAtual)
+
+})
+
+}
+
+/* CONTROLE REMOTO / TECLADO */
+
+document.addEventListener("keydown",e=>{
+
+if(e.key==="ArrowDown"){
+if(canalAtual < canais.length-1){
+abrir(canalAtual+1)
+}
+}
+
+if(e.key==="ArrowUp"){
+if(canalAtual > 0){
+abrir(canalAtual-1)
+}
+}
+
+})
 
 </script>
 

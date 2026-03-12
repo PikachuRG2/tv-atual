@@ -163,3 +163,6 @@ https:\\stream3.camara.gov.br\tv1\manifest.m3u8
 
 #EXTINF:-1,TV-BS
 https:\\br5093.streamingdevideo.com.br\bstv\bstv\chunklist_w1014792137.m3u8
+
+#EXTINF:-1,TV+-
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=2153

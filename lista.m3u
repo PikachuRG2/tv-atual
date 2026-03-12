@@ -172,3 +172,120 @@ https://stream.ads.ottera.tv/playlist.m3u8?network_id=2152
 
 #EXTINF:-1,TV+-Runtimes Espanto
 https://stream.ads.ottera.tv/playlist.m3u8?network_id=2151
+
+#EXTINF:-1,Canal 5 - RBA BAND
+https://cdn.live.br1.jmvstream.com/w/LVW-15748/LVW15748_Yed7yzLuRC/chunklist.m3u8
+
+#EXTINF:-1,Canal 6 - REDE BRASIL
+https://video09.logicahost.com.br/redebrasiloficial/redebrasiloficial/playlist.m3u8
+
+#EXTINF:-1,Canal 7 - TV PAMPA REDE TV
+https://video04.logicahost.com.br/tvpampa/tvpampa/playlist.m3u8
+
+#EXTINF:-1,Canal 8 - TV MEIO NORTE
+https://isaocorp.cloudecast.com/redemeio/index.m3u8
+
+#EXTINF:-1,Canal 9 - TV APARECIDA
+https://amg01391-sbtinfast-amg01391c7-lg-br-9989.playouts.now.amagi.tv/playlist/amg01391-addigital-tvaparecida-lgbr/playlist.m3u8
+
+#EXTINF:-1,Canal 10 - TVC TV GAZETA
+https://video08.logicahost.com.br/tvc21/tvc21/playlist.m3u8
+
+#EXTINF:-1,Canal 11 - ROOKIE BLUE
+https://amg00353-amg00353c63-samsung-br-8947.playouts.now.amagi.tv/playlist.m3u8
+
+#EXTINF:-1,Canal 12 - RECORD NEWS
+https://rnw-rn-tcl-roku-syndication.otteravision.com/rnw/rn/rnw_rn.m3u8
+
+#EXTINF:-1,Canal 13 - CAZÉ TV
+https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/Caze_TV.m3u8
+
+#EXTINF:-1,Canal 14 - MOVIE SPHERE
+https://amg00353-amg00353c29-tcl-us-6383.playouts.now.amagi.tv/playlist/amg00353-lionsgatetvfast-moviespherebrazil-tclus/playlist.m3u8
+
+#EXTINF:-1,Canal 15 - MALHAÇÃO
+https://ssai2-ads.api.leiniao.com/global-adinsertion-api/hls/live/v2/f46d6f4717bc41758662e8c6700c1d68/playlist.m3u8
+
+#EXTINF:-1,Canal 16 - JOVEM PAN NEWS
+https://ssai-ads.api.leiniao.com/global-adinsertion-api/hls/live/v2/f68ff6447c134b8e9cf8bed47083d48a/playlist.m3u8
+
+#EXTINF:-1,Canal 17 - GETV
+https://ssai2-ads.api.leiniao.com/global-adinsertion-api/hls/live/v2/0b78b33e42744cf69addf997b9cd4d2e/playlist.m3u8
+
+#EXTINF:-1,Canal 18 - GLNTV
+https://stmv8.samcast.com.br/glnfilmes/glnfilmes/playlist.m3u8
+
+#EXTINF:-1,Canal 21 - CARTOON NETWORK
+https://origin-nxtv.b-cdn.net/CARTOON_NETWORK_TK/tracks-v1a1/mono.ts.m3u8?token=roku-t0k3n-v3r1fy1ng
+
+#EXTINF:-1,Canal 23 - TV CRISTAL
+https://tv03.zas.media:1936/tvcristalto/tvcristalto/playlist.m3u8
+
+#EXTINF:-1,Canal 24 - TOP TV
+https://isaocorp.cloudecast.com/toptv/index.m3u8
+
+#EXTINF:-1,Canal 25 - SIC PORTUGAL
+https://d1zx6l1dn8vaj5.cloudfront.net/out/v1/b89cc37caa6d418eb423cf092a2ef970/index_4.m3u8
+
+#EXTINF:-1,Canal 26 - REDE FAMILIA
+https://tv03.zas.media:1936/rftv/rftv/playlist.m3u8
+
+#EXTINF:-1,Canal 27 - TV PARANÁ TURISMO
+https://aovivo.paranaeducativa.pr.gov.br/hls/tve.m3u8
+
+#EXTINF:-1,Canal 28 - CHANNEL MOVIES
+https://stmv2.painelvideocast.com.br/movies1/movies1/playlist.m3u8
+
+#EXTINF:-1,Canal 29 - RETRÔ CARTOON
+https://stmv1.video.brstream.com.br/retrotv/retrotv/playlist.m3u8
+
+#EXTINF:-1,Canal 30 - FOX KIDS
+https://stmv2.srvif.com/emlsilva/emlsilva/playlist.m3u8
+
+#EXTINF:-1,Canal 31 - CNN BRASIL
+https://amg01391-sbtinfast-amg01391c4-lg-br-4597.playouts.now.amagi.tv/playlist/amg01391-addigital-cnnbrasil-lgbr/playlist.m3u8
+
+#EXTINF:-1,Canal 33 - DISCOVERY
+https://origin-nxtv.b-cdn.net/DISCOVERY_CHANNEL_NX/tracks-v2a1/mono.ts.m3u8?token=roku-t0k3n-v3r1fy1ng
+
+#EXTINF:-1,Canal 34 - AXN
+https://origin-nxtv.b-cdn.net/AXN_TK/index.m3u8?token=roku-t0k3n-v3r1fy1ng
+
+#EXTINF:-1,Canal 35 - SONY CINEMA
+https://spt-sonyoneclassicas-1-br.samsung.wurl.tv/playlist.m3u8
+
+#EXTINF:-1,Canal 36 - BAND NEWS
+https://origin-nxtv.b-cdn.net/BAND_NEWS/tracks-a1/mono.ts.m3u8?token=roku-t0k3n-v3r1fy1ng
+
+#EXTINF:-1,Canal 37 - RUNTIME AÇÃO
+https://run-rt-ra-lgchannels.otteravision.com/run/rt_ra/rt_ra_720.m3u8
+
+#EXTINF:-1,Canal 38 - RUNTIME COMÉDIA
+https://run-rc-br-lgchannels.otteravision.com/run/rc_br/rc_br_720.m3u8
+
+#EXTINF:-1,Canal 39 - RUNTIME FAMÍLIA
+https://run-rufb-lgchannels.otteravision.com/run/rufb/rufb_720.m3u8
+
+#EXTINF:-1,Canal 40 - RUNTIME CRIME
+https://run-cr-br-lgchannels.otteravision.com/run/cr_br/cr_br_720.m3u8
+
+#EXTINF:-1,Canal 41 - RUNTIME ESPANTO
+https://run-th-br-lgchannels.otteravision.com/run/th_br/th_br_720.m3u8
+
+#EXTINF:-1,Canal 42 - TV ARATU
+https://cdn.live.br1.jmvstream.com/w/LVW-9359/LVW9359_XSyReL0QVf/playlist.m3u8
+
+#EXTINF:-1,Canal 43 - ENTRETENDO
+https://cdn-3.nxplay.com.br/ENTRETENDO_FAST/index.m3u8
+
+#EXTINF:-1,Canal 44 - BORA
+https://cdn-3.nxplay.com.br/BORAFILMES_FAST/index.m3u8
+
+#EXTINF:-1,Canal 46 - RECORD RN
+https://video08.logicahost.com.br/portaldatropical02/portaldatropical02/playlist.m3u8
+
+#EXTINF:-1,Canal 47 - REVIVA
+https://stmv.webtvninjas.com.br/webtvni1/webtvni1/playlist.m3u8
+
+#EXTINF:-1,Canal 48 - NOVELÍSSIMA
+https://cis-no-samsung.otteravision.com/cis/no/no_h265.m3u8

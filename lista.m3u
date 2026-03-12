@@ -68,8 +68,17 @@ https:\\58a4464faef53.streamlock.net\impd\ngrp:impd_all\playlist.m3u8
 #EXTINF:-1,TV-Animal Planet
 hthttps://origin-nxtv.b-cdn.net/ANIMAL_PLANET_NX/tracks-v2a1/mono.ts.m3u8?token=roku-t0k3n-v3r1fy1ng
 
-#EXTINF:-1,Esportes-GE TV
+#EXTINF:-1,SPORT-GE TV
 https://ssai2-ads.api.leiniao.com/global-adinsertion-api/hls/live/v2/0b78b33e42744cf69addf997b9cd4d2e/playlist.m3u8
+
+#EXTINF:-1,SPORT-Bein sport N
+https://amg01334-beinsportsllc-beinxtraesp-localnow-aekzc.amagi.tv/playlist.m3u8
+
+#EXTINF:-1,SPORT-Brasilia
+https://a.cdni.live/radioesporte/radioesporte/chunklist_w1002148111.m3u8
+
+#EXTINF:-1,TV-SBT
+https://aovivo.maissbt.com/indexMobile.m3u8
 
 #EXTINF:-1,TV-Sbt News
 https://sbtnews.maissbt.com/3.m3u8
@@ -107,6 +116,53 @@ https:\\stmv1.srvif.com\gmusic\gmusic\playlist.m3u8
 #EXTINF:-1,TV-GeekDook
 https:\\stream.ichibantv.com:3764\hybrid\play.m3u8
 
-#EXTINF:-1,TV-GeekDook
-https:\\stream.ichibantv.com:3764\hybrid\play.m3u8
+#EXTINF:-1,TV-RTN SP
+https:\\tv01.zas.media:1936\rtntv\rtntv\playlist.m3u8
 
+#EXTINF:-1,TV-Cative FM
+https:\\5b33b873179a2.streamlock.net:1443\catve2\catve2\playlist.m3u8
+
+#EXTINF:-1,TV-Classique
+https:\\stmv1.srvif.com\classique\classique\playlist.m3u8
+
+#EXTINF:-1,TV-Adesso
+https:\\cdn.jmvstream.com\w\LVW-9715\LVW9715_12B26T62tm\playlist.m3u8
+
+#EXTINF:-1,TV-Brasil
+https:\\streaming.procergs.com.br:8443\tve\smil:tve-s.smil\playlist.m3u8
+
+#EXTINF:-1,TV-Band
+https://cdn.live.br1.jmvstream.com/w/LVW-15748/LVW15748_Yed7yzLuRC/chunklist.m3u8
+
+#EXTINF:-1,TV-Novo Tempo
+https:\\stream.live.novotempo.com\tv\smil:tvnovotempo.smil\chunklist_b1628000_slpor.m3u8
+
+#EXTINF:-1,TV-Reviso
+https://stmv.webtvninjas.com.br/webtvni1/webtvni1/playlist.m3u8
+
+#EXTINF:-1,TV-Sertão
+http:\\wz4.dnip.com.br\sertaotv\sertaotv.sdp\playlist.m3u8
+
+#EXTINF:-1,TV-GLN
+https://stmv8.samcast.com.br/glnfilmes/glnfilmes/playlist.m3u8
+
+#EXTINF:-1,TV-Channel Movies
+https://stmv2.painelvideocast.com.br/movies1/movies1/playlist.m3u8
+
+#EXTINF:-1,TV-Parana Tuismo
+https:\\aovivo.paranaeducativa.pr.gov.br\hls\tve.m3u8
+
+#EXTINF:-1,TV-Tendas
+https:\\tv02.zas.media:1936\tendatv\tendatv\playlist.m3u8
+
+#EXTINF:-1,TV-Loadings
+https:\\stmv1.srvif.com\loadingtv\loadingtv\playlist.m3u8
+
+#EXTINF:-1,TV-Movies Gospel
+https:\\stmv1.srvif.com\gospelf\gospelf\playlist.m3u8
+
+#EXTINF:-1,TV-Camara
+https:\\stream3.camara.gov.br\tv1\manifest.m3u8
+
+#EXTINF:-1,TV-BS
+https:\\br5093.streamingdevideo.com.br\bstv\bstv\chunklist_w1014792137.m3u8

@@ -1,6 +1,24 @@
 #EXTM3U
+#EXTINF:-1,TV-Ministerio Infantil
+https:\\stmv4.voxtvhd.com.br\1990\1990\playlist.m3u8
+
+#EXTINF:-1,Noticias-CNN News
+https:\\d25usgadhphvwi.cloudfront.net\hls\main.m3u8
+
+#EXTINF:-1,Noticias-TV Video News
+https:\\video01.logicahost.com.br\tvideonews\tvideonews\chunklist.m3u8
+
+#EXTINF:-1,Noticias-4 Por 4
+https:\\video01.soultv.com.br\programa4por4\programa4por4\playlist.m3u8
+
+#EXTINF:-1,TV-Camara dos Deputados
+https:\\stream3.camara.gov.br\tv1\manifest.m3u8
+
 #EXTINF:-1,TV-Plena
 https:\\cdn.jmvstream.com\w\LVW-9591\LVW9591_PmXtgATnaS\playlist.m3u8
+
+#EXTINF:-1,Desenho-Cartoon Gospel
+https:\\stmv1.srvif.com\gospelcartoon\gospelcartoon\playlist.m3u8
 
 #EXTINF:-1,Serie-Z Nation
 https://d1si3n1st4nkgb.cloudfront.net/10000/88876018/hls/master.m3u8?ads.xumo_channelId=88876018
@@ -209,9 +227,6 @@ https://ssai2-ads.api.leiniao.com/global-adinsertion-api/hls/live/v2/0b78b33e427
 #EXTINF:-1,Canal 18 - GLNTV
 https://stmv8.samcast.com.br/glnfilmes/glnfilmes/playlist.m3u8
 
-#EXTINF:-1,Canal 21 - CARTOON NETWORK
-https://origin-nxtv.b-cdn.net/CARTOON_NETWORK_TK/tracks-v1a1/mono.ts.m3u8?token=roku-t0k3n-v3r1fy1ng
-
 #EXTINF:-1,Canal 23 - TV CRISTAL
 https://tv03.zas.media:1936/tvcristalto/tvcristalto/playlist.m3u8
 
@@ -230,9 +245,6 @@ https://aovivo.paranaeducativa.pr.gov.br/hls/tve.m3u8
 #EXTINF:-1,Canal 28 - CHANNEL MOVIES
 https://stmv2.painelvideocast.com.br/movies1/movies1/playlist.m3u8
 
-#EXTINF:-1,Canal 29 - RETRÔ CARTOON
-https://stmv1.video.brstream.com.br/retrotv/retrotv/playlist.m3u8
-
 #EXTINF:-1,Canal 30 - FOX KIDS
 https://stmv2.srvif.com/emlsilva/emlsilva/playlist.m3u8
 
@@ -241,9 +253,6 @@ https://amg01391-sbtinfast-amg01391c4-lg-br-4597.playouts.now.amagi.tv/playlist/
 
 #EXTINF:-1,Canal 33 - DISCOVERY
 https://origin-nxtv.b-cdn.net/DISCOVERY_CHANNEL_NX/tracks-v2a1/mono.ts.m3u8?token=roku-t0k3n-v3r1fy1ng
-
-#EXTINF:-1,Canal 34 - AXN
-https://origin-nxtv.b-cdn.net/AXN_TK/index.m3u8?token=roku-t0k3n-v3r1fy1ng
 
 #EXTINF:-1,Canal 35 - SONY CINEMA
 https://spt-sonyoneclassicas-1-br.samsung.wurl.tv/playlist.m3u8

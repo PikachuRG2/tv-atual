@@ -2,6 +2,9 @@
 #EXTINF:-1,TV-Ministerio Infantil
 https:\\stmv4.voxtvhd.com.br\1990\1990\playlist.m3u8
 
+#EXTINF:-1,TV-Kuriakos Infantil
+https:\\w2.manasat.com\kkids\smil:kkids.smil\playlist.m3u8
+
 #EXTINF:-1,Noticias-CNN News
 https:\\d25usgadhphvwi.cloudfront.net\hls\main.m3u8
 
@@ -22,6 +25,10 @@ https:\\televisa-televisa-1-it.samsung.wurl.tv\playlist.m3u8
 
 #EXTINF:-1,TV-Sony one Classicas
 https:\\spt-sonyoneclassicas-1-br.samsung.wurl.tv\playlist.m3u8
+
+
+#EXTINF:-1,Clips-TV Osorio
+https:\\stmv1.srvstm.com\demo2573\demo2573\playlist.m3u8
 
 #EXTINF:-1,Clips-Com Brasil
 https:\\br5093.streamingdevideo.com.br\abc\abc\master.m3u8

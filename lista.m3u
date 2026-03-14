@@ -2,6 +2,9 @@
 #EXTINF:-1,TV-Ministerio Infantil
 https:\\stmv4.voxtvhd.com.br\1990\1990\playlist.m3u8
 
+#EXTINF:-1,TV-VRT Channel
+https:\\sistemavrt2023.vrtchannel.tv.br:3626\hybrid\play.m3u8
+
 #EXTINF:-1,TV-Kuriakos Infantil
 https:\\w2.manasat.com\kkids\smil:kkids.smil\playlist.m3u8
 

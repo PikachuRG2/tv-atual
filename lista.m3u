@@ -20,6 +20,25 @@ https:\\cdn.jmvstream.com\w\LVW-9591\LVW9591_PmXtgATnaS\playlist.m3u8
 #EXTINF:-1,TV-Televisa
 https:\\televisa-televisa-1-it.samsung.wurl.tv\playlist.m3u8
 
+#EXTINF:-1,TV-Sony one Classicas
+https:\\spt-sonyoneclassicas-1-br.samsung.wurl.tv\playlist.m3u8
+
+#EXTINF:-1,Clips-Com Brasil
+https:\\br5093.streamingdevideo.com.br\abc\abc\master.m3u8
+
+#EXTINF:-1,TV-Pai Eterno GO
+https:\\video09.logicahost.com.br\paieterno\paieterno\master.m3u8
+
+#EXTINF:-1,TV-Cultura Catéve Rp
+https:\\5b33b873179a2.streamlock.net:1443\live\livestream\playlist.m3u8
+
+
+#EXTINF:-1,TV-MY Time
+https:\\appletree-mytime-samsungbrazil.amagi.tv\playlist720p.m3u8
+
+#EXTINF:-1,TV-MY Time
+https:\\appletree-mytime-samsungbrazil.amagi.tv\playlist720p.m3u8
+
 #EXTINF:-1,TV-I Ficção
 https:\\video-auth2.iol.pt\live_tvi_ficcao\live_tvi_ficcao\edge_servers\tvificcao-720p\playlist.m3u8
 

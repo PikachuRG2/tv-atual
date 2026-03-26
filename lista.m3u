@@ -1,4 +1,4 @@
-const canais = [
+#EXTM3U
 {"nome":"TV-Ministerio Infantil","url":"https://stmv4.voxtvhd.com.br/1990/1990/playlist.m3u8","logo":"https://ui-avatars.com/api/?name=Ministerio+Infantil&background=111&color=fff"},
 {"nome":"TV-Aracati","url":"https://video04.logicahost.com.br/tvaracati/tvaracati/playlist.m3u8","logo":"https://ui-avatars.com/api/?name=Aracati&background=111&color=fff"},
 {"nome":"TV-VRT Channel","url":"https://sistemavrt2023.vrtchannel.tv.br:3626/hybrid/play.m3u8","logo":"https://ui-avatars.com/api/?name=VRT&background=111&color=fff"},
@@ -75,4 +75,3 @@ const canais = [
 {"nome":"TV+-Runtimes Filmes","url":"https://stream.ads.ottera.tv/playlist.m3u8?network_id=2153","logo":"https://ui-avatars.com/api/?name=Filmes&background=111&color=fff"},
 {"nome":"TV+-Runtimes Ação","url":"https://stream.ads.ottera.tv/playlist.m3u8?network_id=2152","logo":"https://ui-avatars.com/api/?name=Acao&background=111&color=fff"},
 {"nome":"TV+-Runtimes Espanto","url":"https://stream.ads.ottera.tv/playlist.m3u8?network_id=2151","logo":"https://ui-avatars.com/api/?name=Terror&background=111&color=fff"}
-]

@@ -24,9 +24,10 @@ background:#111;
 }
 
 .canal{
-padding:12px;
+padding:14px;
 border-bottom:1px solid #222;
 cursor:pointer;
+font-size:18px;
 }
 
 .canal:hover{
@@ -69,7 +70,7 @@ let hls
 const video=document.getElementById("video")
 
 // =======================
-// CARREGAR LISTAS
+// CARREGAR DADOS
 // =======================
 
 async function carregar(){
@@ -119,6 +120,7 @@ nome:c.nome,
 url:c.url
 })
 })
+
 }catch(e){}
 
 }
@@ -135,6 +137,7 @@ nome:c.nome,
 url:c.stream
 })
 })
+
 }catch(e){}
 
 }
@@ -165,7 +168,7 @@ div.appendChild(item)
 }
 
 // =======================
-// PLAYER (CORRIGIDO)
+// PLAYER (ANTI-BUG TV)
 // =======================
 
 function abrir(i){
@@ -175,7 +178,7 @@ if(i < 0 || i >= canais.length) return
 canalAtual=i
 const url=canais[i].url
 
-// reset seguro
+// reset
 if(hls){
 hls.destroy()
 hls = null
@@ -185,7 +188,6 @@ video.pause()
 video.removeAttribute("src")
 video.load()
 
-// HLS.js
 if(Hls.isSupported()){
 
 hls = new Hls({
@@ -201,7 +203,6 @@ hls.on(Hls.Events.MANIFEST_PARSED, () => {
 video.play().catch(()=>{})
 })
 
-// fallback erro
 hls.on(Hls.Events.ERROR, function(event, data) {
 if (data.fatal) {
 console.log("Erro HLS:", data)
@@ -210,7 +211,7 @@ abrir(canalAtual)
 })
 
 }else{
-// Safari / TVs nativas
+
 video.src = url
 
 video.onloadedmetadata = () => {
@@ -237,27 +238,46 @@ video.play().catch(()=>{})
 })
 
 // =======================
-// CONTROLE REMOTO (TECLAS)
+// CONTROLE REMOTO LG / TV
 // =======================
 
-document.addEventListener("keydown",e=>{
+document.addEventListener("keydown", (e) => {
 
-if(e.key==="ArrowDown"){
-abrir(canalAtual+1)
+console.log("Tecla:", e.key, e.keyCode)
+
+// SETAS (sempre funciona)
+if(e.key === "ArrowDown"){
+abrir(canalAtual + 1)
 }
 
-if(e.key==="ArrowUp"){
-abrir(canalAtual-1)
+if(e.key === "ArrowUp"){
+abrir(canalAtual - 1)
 }
 
-if(e.key==="Enter"){
+// BOTÃO OK
+if(e.key === "Enter"){
 video.play().catch(()=>{})
+}
+
+// BOTÕES DE CANAL (LG / algumas TVs)
+if(
+e.key === "ChannelUp" ||
+e.keyCode === 33
+){
+abrir(canalAtual + 1)
+}
+
+if(
+e.key === "ChannelDown" ||
+e.keyCode === 34
+){
+abrir(canalAtual - 1)
 }
 
 })
 
 // =======================
-// ATUALIZAR UI
+// ATUALIZAR LISTA
 // =======================
 
 function atualizar(){
@@ -265,6 +285,15 @@ function atualizar(){
 document.querySelectorAll(".canal").forEach((el,i)=>{
 el.classList.toggle("ativo",i===canalAtual)
 })
+
+// scroll automático
+const ativo = document.querySelector(".canal.ativo")
+if(ativo){
+ativo.scrollIntoView({
+block: "center",
+behavior: "smooth"
+})
+}
 
 }
 

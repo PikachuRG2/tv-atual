@@ -120,9 +120,6 @@ https://d1si3n1st4nkgb.cloudfront.net/10000/88876020/hls/master.m3u8?ads.xumo_ch
 #EXTINF:-1,Biblia-IMPD
 https:\\58a4464faef53.streamlock.net\impd\ngrp:impd_all\playlist.m3u8
 
-#EXTINF:-1,TV-Animal Planet
-hthttps://origin-nxtv.b-cdn.net/ANIMAL_PLANET_NX/tracks-v2a1/mono.ts.m3u8?token=roku-t0k3n-v3r1fy1ng
-
 #EXTINF:-1,SPORT-GE TV
 https://ssai2-ads.api.leiniao.com/global-adinsertion-api/hls/live/v2/0b78b33e42744cf69addf997b9cd4d2e/playlist.m3u8
 

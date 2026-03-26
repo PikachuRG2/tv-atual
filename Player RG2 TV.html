@@ -1,89 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>RG2 TV</title>
+<title>RG2 TV PRO</title>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <style>
-body{
-background:#0b0b0b;
-color:white;
-font-family:Arial;
+
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f0f0f,#050505);
+color:white;
 display:flex;
 height:100vh;
 overflow:hidden;
 }
 
-/* LISTA */
+/* =======================
+SIDEBAR
+======================= */
 #canais{
-width:320px;
-overflow:auto;
-background:#111;
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:10px;
-padding:10px;
+width:300px;
+background:rgba(20,20,20,0.9);
+backdrop-filter:blur(10px);
+overflow-y:auto;
+border-right:1px solid #222;
+display:flex;
+flex-direction:column;
 }
 
-/* CARD */
+/* busca */
+#busca{
+padding:12px;
+border:none;
+outline:none;
+background:#0d0d0d;
+color:white;
+font-size:15px;
+border-bottom:1px solid #222;
+}
+
+/* canal */
 .canal{
-background:#1a1a1a;
-border-radius:8px;
-padding:10px;
+padding:14px;
+border-bottom:1px solid #1a1a1a;
 cursor:pointer;
-text-align:center;
 transition:0.2s;
+display:flex;
+align-items:center;
+gap:10px;
 }
 
 .canal:hover{
-background:#2a2a2a;
-transform:scale(1.05);
+background:#1f1f1f;
+transform:translateX(4px);
 }
 
 .canal.ativo{
-outline:2px solid #00aaff;
+background:linear-gradient(90deg,#00aaff,#0066ff);
+font-weight:bold;
 }
 
-/* LOGO */
-.canal img{
-width:100%;
-height:80px;
-object-fit:contain;
-margin-bottom:8px;
+/* scrollbar */
+#canais::-webkit-scrollbar{
+width:6px;
+}
+#canais::-webkit-scrollbar-thumb{
+background:#333;
+border-radius:10px;
 }
 
-/* NOME */
-.canal span{
-font-size:14px;
-display:block;
-}
-
-/* PLAYER */
+/* =======================
+PLAYER
+======================= */
 #player{
 flex:1;
+position:relative;
 display:flex;
 justify-content:center;
 align-items:center;
 background:black;
 }
 
+/* video */
 video{
 width:100%;
 height:100%;
-background:black;
+object-fit:cover;
 }
+
+/* overlay */
+#overlay{
+position:absolute;
+top:20px;
+left:20px;
+background:rgba(0,0,0,0.6);
+padding:10px 15px;
+border-radius:10px;
+font-size:18px;
+backdrop-filter:blur(10px);
+}
+
+/* responsivo */
+@media(max-width:768px){
+#canais{
+width:200px;
+}
+.canal{
+font-size:14px;
+}
+}
+
 </style>
 </head>
 
 <body>
 
-<div id="canais"></div>
+<div id="canais">
+<input id="busca" placeholder="Buscar canal...">
+</div>
 
 <div id="player">
 <video id="video" controls playsinline></video>
+<div id="overlay"></div>
 </div>
 
 <script>
@@ -94,111 +140,92 @@ let hls
 const video=document.getElementById("video")
 
 // =======================
-// CARREGAR DADOS
+// CARREGAR
 // =======================
 
 async function carregar(){
-
 await carregarM3U("lista.m3u")
 await carregarJSON("lista.json")
 await carregarAPI("https://api.meusite.com/canais")
 
 mostrar()
 abrir(0)
-
 }
 
-async function carregarM3U(url){
+// =======================
+// FORMATOS
+// =======================
 
+async function carregarM3U(url){
 try{
 const res=await fetch(url)
 const txt=await res.text()
-
 const linhas=txt.split("\n")
 
 for(let i=0;i<linhas.length;i++){
-
 if(linhas[i].startsWith("#EXTINF")){
-
 let nome=linhas[i].split(",")[1]
 let link=linhas[i+1]
-
-// tentativa de pegar logo (se tiver tvg-logo)
-let logoMatch = linhas[i].match(/tvg-logo="(.*?)"/)
-let logo = logoMatch ? logoMatch[1] : ""
-
-canais.push({nome,url:link,logo})
-
+canais.push({nome,url:link})
 }
-
 }
 }catch(e){}
-
 }
 
 async function carregarJSON(url){
-
 try{
 const res=await fetch(url)
 const data=await res.json()
 
 data.forEach(c=>{
-canais.push({
-nome:c.nome,
-url:c.url,
-logo:c.logo || ""
+canais.push({nome:c.nome,url:c.url})
 })
-})
-
 }catch(e){}
-
 }
 
 async function carregarAPI(url){
-
 try{
 const res=await fetch(url)
 const data=await res.json()
 
 data.canais.forEach(c=>{
-canais.push({
-nome:c.nome,
-url:c.stream,
-logo:c.logo || ""
+canais.push({nome:c.nome,url:c.stream})
 })
-})
-
 }catch(e){}
-
 }
 
 // =======================
-// UI (GRID COM ÍCONE)
+// UI
 // =======================
 
-function mostrar(){
+function mostrar(lista=canais){
 
 const div=document.getElementById("canais")
-div.innerHTML=""
+const busca=document.getElementById("busca").value.toLowerCase()
 
-canais.forEach((c,i)=>{
+div.innerHTML=`<input id="busca" placeholder="Buscar canal..." oninput="filtrar()">`
+
+lista
+.filter(c=>c.nome.toLowerCase().includes(busca))
+.forEach((c,i)=>{
 
 let item=document.createElement("div")
 item.className="canal"
+item.innerText=c.nome
 
 if(i===canalAtual) item.classList.add("ativo")
 
 item.onclick=()=>abrir(i)
 
-item.innerHTML = `
-<img src="${c.logo || 'https://via.placeholder.com/150?text=TV'}">
-<span>${c.nome}</span>
-`
-
 div.appendChild(item)
 
 })
 
+}
+
+// busca
+function filtrar(){
+mostrar()
 }
 
 // =======================
@@ -207,14 +234,16 @@ div.appendChild(item)
 
 function abrir(i){
 
-if(i < 0 || i >= canais.length) return
+if(i<0 || i>=canais.length) return
 
 canalAtual=i
 const url=canais[i].url
 
+document.getElementById("overlay").innerText=canais[i].nome
+
 if(hls){
 hls.destroy()
-hls = null
+hls=null
 }
 
 video.pause()
@@ -223,30 +252,28 @@ video.load()
 
 if(Hls.isSupported()){
 
-hls = new Hls({
+hls=new Hls({
 lowLatencyMode:true,
-maxBufferLength:10,
-enableWorker:true
+maxBufferLength:10
 })
 
 hls.loadSource(url)
 hls.attachMedia(video)
 
-hls.on(Hls.Events.MANIFEST_PARSED, () => {
+hls.on(Hls.Events.MANIFEST_PARSED,()=>{
 video.play().catch(()=>{})
 })
 
-hls.on(Hls.Events.ERROR, function(event, data) {
-if (data.fatal) {
+hls.on(Hls.Events.ERROR,(event,data)=>{
+if(data.fatal){
 abrir(canalAtual)
 }
 })
 
 }else{
 
-video.src = url
-
-video.onloadedmetadata = () => {
+video.src=url
+video.onloadedmetadata=()=>{
 video.play().catch(()=>{})
 }
 
@@ -257,25 +284,19 @@ atualizar()
 }
 
 // =======================
-// CONTROLE REMOTO
+// CONTROLE
 // =======================
 
-document.addEventListener("keydown", (e) => {
+document.addEventListener("keydown",(e)=>{
 
-if(e.key === "ArrowDown") abrir(canalAtual + 2)
-if(e.key === "ArrowUp") abrir(canalAtual - 2)
-
-if(e.key === "ArrowRight") abrir(canalAtual + 1)
-if(e.key === "ArrowLeft") abrir(canalAtual - 1)
-
-if(e.key === "Enter"){
-video.play().catch(()=>{})
-}
+if(e.key==="ArrowDown") abrir(canalAtual+1)
+if(e.key==="ArrowUp") abrir(canalAtual-1)
+if(e.key==="Enter") video.play().catch(()=>{})
 
 })
 
 // =======================
-// ATUALIZAR UI
+// ATUALIZAR
 // =======================
 
 function atualizar(){
@@ -284,12 +305,9 @@ document.querySelectorAll(".canal").forEach((el,i)=>{
 el.classList.toggle("ativo",i===canalAtual)
 })
 
-const ativo = document.querySelector(".canal.ativo")
+const ativo=document.querySelector(".canal.ativo")
 if(ativo){
-ativo.scrollIntoView({
-block: "center",
-behavior: "smooth"
-})
+ativo.scrollIntoView({block:"center",behavior:"smooth"})
 }
 
 }

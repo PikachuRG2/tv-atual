@@ -1152,7 +1152,7 @@ http://45.162.64.114/FISH_TV/index.m3u8
 https://59fb88a1b1108.streamlock.net/fonte/_definst_/fontetv/chunklist_w1224511652.m3u8
 #EXTINF:-1,Futura (720p)
 http://168.197.104.22/FUTURA/index.m3u8
-#EXTINF:-1,ge Fast (1080p)
+#EXTINF:-1,GE Fast FOOTBOOL (1080p)
 https://amg00716-globo-amg00716c1-tcl-br-9495.playouts.now.amagi.tv/playlist.m3u8
 #EXTINF:-1,History (720p)
 http://45.177.114.114/HISTORY/index.m3u8
@@ -1250,5 +1250,5 @@ http://45.162.64.114/CNT/index.m3u8
 https://video08.logicahost.com.br/portaldatropical02/portaldatropical02/chunklist.m3u8
 #EXTINF:-1,Rede TV
 http://45.162.64.114/REDE_TV/index.m3u8
-#EXTINF:-1,like Gecko) Chrome/129.0.0.0 Safari/537.36" group-title="VARIEDADES",Globo TV Bahia (1080i)
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36
+#EXTINF:-1,Globo TV Bahia (1080i)__GLOBO
+http://hls1.sua.tv/live/globotvbahiafhdbr2/s.m3u8

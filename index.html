@@ -3,48 +3,60 @@
 <head>
 <meta charset="UTF-8">
 <title>RG2 TV</title>
+
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <style>
 
+*{
+box-sizing:border-box;
+}
+
 body{
 margin:0;
-background:black;
-color:white;
+background:#000;
+color:#fff;
 display:flex;
 height:100vh;
-font-family:Arial;
+font-family:Arial,sans-serif;
+overflow:hidden;
 }
 
 #canais{
 width:260px;
+min-width:260px;
 background:#111;
-overflow:auto;
+overflow-y:auto;
 }
 
 .canal{
-padding:12px;
+padding:14px;
 border-bottom:1px solid #222;
 cursor:pointer;
+transition:.2s;
+}
+
+.canal:hover{
+background:#222;
 }
 
 .canal.ativo{
 background:#00aaff;
+color:#fff;
 }
 
 #player{
 flex:1;
 position:relative;
+background:#000;
 }
 
 video{
 width:100%;
 height:100%;
-background:black;
-}
-
-.buffer{
-display:none;
+display:block;
+background:#000;
+object-fit:contain;
 }
 
 </style>
@@ -55,136 +67,288 @@ display:none;
 <div id="canais"></div>
 
 <div id="player">
-
-<video id="videoMain" autoplay controls></video>
-
-<!-- players escondidos -->
-<video id="buffer1" class="buffer"></video>
-<video id="buffer2" class="buffer"></video>
-
+<video id="videoMain" autoplay controls playsinline></video>
 </div>
 
 <script>
 
-let canais=[]
-let canalAtual=0
+let canais = [];
+let canalAtual = -1;
+let hlsAtual = null;
 
-let players=[
-document.getElementById("videoMain"),
-document.getElementById("buffer1"),
-document.getElementById("buffer2")
-]
+const video = document.getElementById("videoMain");
+const lista = document.getElementById("canais");
 
-let hlsPlayers=[null,null,null]
 
 async function carregar(){
 
-const res=await fetch("lista.m3u")
-const txt=await res.text()
+    try{
 
-const linhas=txt.split("\n")
+        const res = await fetch("lista.m3u");
 
-for(let i=0;i<linhas.length;i++){
+        if(!res.ok){
+            throw new Error("Não foi possível carregar lista.m3u");
+        }
 
-if(linhas[i].startsWith("#EXTINF")){
+        const txt = await res.text();
 
-let nome=linhas[i].split(",")[1]
-let url=linhas[i+1]
+        const linhas = txt
+            .split(/\r?\n/)
+            .map(l => l.trim())
+            .filter(Boolean);
 
-canais.push({nome,url})
+        for(let i = 0; i < linhas.length; i++){
+
+            if(linhas[i].startsWith("#EXTINF")){
+
+                const nome = linhas[i]
+                    .substring(linhas[i].indexOf(",") + 1)
+                    .trim();
+
+                const url = linhas[i + 1];
+
+                if(
+                    url &&
+                    !url.startsWith("#")
+                ){
+
+                    canais.push({
+                        nome: nome,
+                        url: url
+                    });
+
+                }
+
+            }
+
+        }
+
+        mostrar();
+
+        if(canais.length > 0){
+            abrir(0);
+        }
+
+    }catch(erro){
+
+        console.error("Erro ao carregar lista:",erro);
+
+        lista.innerHTML =
+            "<div style='padding:20px;color:red'>Erro ao carregar canais.</div>";
+
+    }
 
 }
 
-}
-
-mostrar()
-abrir(0)
-
-}
 
 function mostrar(){
 
-let div=document.getElementById("canais")
+    lista.innerHTML = "";
 
-canais.forEach((c,i)=>{
+    canais.forEach((canal,index)=>{
 
-let item=document.createElement("div")
-item.className="canal"
-item.innerText=c.nome
+        const item = document.createElement("div");
 
-item.onclick=()=>abrir(i)
+        item.className = "canal";
 
-div.appendChild(item)
+        item.innerText = canal.nome;
 
-})
+        item.onclick = () => {
+            abrir(index);
+        };
 
-}
+        lista.appendChild(item);
 
-function abrir(i){
-
-canalAtual=i
-
-carregarPlayer(players[0],i)
-
-preload(i+1,1)
-preload(i+2,2)
-
-atualizar()
+    });
 
 }
 
-function carregarPlayer(video,i){
 
-if(!canais[i]) return
+function destruirHls(){
 
-let url=canais[i].url
+    if(hlsAtual){
 
-if(Hls.isSupported()){
+        try{
+            hlsAtual.stopLoad();
+        }catch(e){}
 
-let hls=new Hls({lowLatencyMode:true})
+        try{
+            hlsAtual.destroy();
+        }catch(e){}
 
-hls.loadSource(url)
-hls.attachMedia(video)
-
-}else{
-
-video.src=url
-
-}
+        hlsAtual = null;
+    }
 
 }
 
-function preload(i,pos){
 
-if(!canais[i]) return
+function abrir(index){
 
-carregarPlayer(players[pos],i)
+    if(index < 0 || index >= canais.length){
+        return;
+    }
+
+    canalAtual = index;
+
+    const url = canais[index].url;
+
+    console.log("Abrindo:",canais[index].nome);
+    console.log("URL:",url);
+
+    destruirHls();
+
+    video.pause();
+
+    video.removeAttribute("src");
+
+    video.load();
+
+
+    if(Hls.isSupported()){
+
+        const hls = new Hls({
+            enableWorker:true,
+            lowLatencyMode:true,
+            backBufferLength:30
+        });
+
+        hlsAtual = hls;
+
+        hls.loadSource(url);
+
+        hls.attachMedia(video);
+
+
+        hls.on(Hls.Events.MANIFEST_PARSED,()=>{
+
+            video.play().catch(()=>{});
+
+        });
+
+
+        hls.on(Hls.Events.ERROR,(event,data)=>{
+
+            console.error(
+                "Erro HLS:",
+                data.type,
+                data.details,
+                data.fatal
+            );
+
+            if(data.fatal){
+
+                switch(data.type){
+
+                    case Hls.ErrorTypes.NETWORK_ERROR:
+
+                        console.error(
+                            "Erro de rede/CORS ao acessar:",
+                            url
+                        );
+
+                        hls.startLoad();
+
+                        break;
+
+                    case Hls.ErrorTypes.MEDIA_ERROR:
+
+                        hls.recoverMediaError();
+
+                        break;
+
+                    default:
+
+                        destruirHls();
+
+                        break;
+
+                }
+
+            }
+
+        });
+
+    }
+
+    else if(video.canPlayType("application/vnd.apple.mpegurl")){
+
+        video.src = url;
+
+        video.addEventListener(
+            "loadedmetadata",
+            ()=>{
+                video.play().catch(()=>{});
+            },
+            {once:true}
+        );
+
+    }
+
+    else{
+
+        alert("Este navegador não suporta reprodução HLS.");
+
+    }
+
+    atualizar();
 
 }
+
 
 function atualizar(){
 
-document.querySelectorAll(".canal").forEach((el,i)=>{
+    document
+        .querySelectorAll(".canal")
+        .forEach((el,index)=>{
 
-el.classList.toggle("ativo",i===canalAtual)
+            el.classList.toggle(
+                "ativo",
+                index === canalAtual
+            );
 
-})
+        });
 
 }
 
-document.addEventListener("keydown",e=>{
 
-if(e.key==="ArrowDown"){
-abrir(canalAtual+1)
-}
+document.addEventListener("keydown",(e)=>{
 
-if(e.key==="ArrowUp"){
-abrir(canalAtual-1)
-}
+    if(e.key === "ArrowDown"){
 
-})
+        e.preventDefault();
 
-carregar()
+        if(canalAtual < canais.length - 1){
+
+            abrir(canalAtual + 1);
+
+        }
+
+    }
+
+
+    if(e.key === "ArrowUp"){
+
+        e.preventDefault();
+
+        if(canalAtual > 0){
+
+            abrir(canalAtual - 1);
+
+        }
+
+    }
+
+});
+
+
+window.addEventListener("beforeunload",()=>{
+
+    destruirHls();
+
+});
+
+
+carregar();
 
 </script>
 

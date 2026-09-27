@@ -335,21 +335,3 @@ https://stmv.webtvninjas.com.br/webtvni1/webtvni1/playlist.m3u8
 
 #EXTINF:-1,Canal 48 - NOVELÍSSIMA
 https://cis-no-samsung.otteravision.com/cis/no/no_h265.m3u8
-
-#EXTINF:-1,Caravana Play
-https://stmv2.voxtvhd.com.br/keynni6990/keynni6990/playlist.m3u8
-
-#EXTINF:-1,AmazonSat
-https://amazonsat.brasilstream.com.br/hls/amazonsat/index.m3u8
-
-#EXTINF:-1,TV GuaraparÍ
-http://video.welltecnologia.com.br:1935/tvguarapari/tvguarapari/playlist.m3u8
-
-#EXTINF:-1,Wtj TV Minas
-https://video02.logicahost.com.br/wtjtvminas/wtjtvminas/playlist.m3u8
-
-#EXTINF:-1,Record MT 1
-https://cdn.jmvstream.com/w/LVW-10842/LVW10842_513N26MDBL/chunklist720p.m3u8
-
-#EXTINF:-1,RECORD TV AMPLITUDE JUARA
-https://cdn.jmvstream.com/w/LVW-10842/LVW10842_513N26MDBL/chunklist.m3u8
